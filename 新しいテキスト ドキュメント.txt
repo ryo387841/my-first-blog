@@ -167,3 +167,83 @@ pythonanywhereのWebページからリンクを取得すると自分のサイトが確認できる
 
 実際に運用する際には、下記サイトでセキュリティのチェック
 https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
+
+DjangoではURLconf(URL設定)でビューとリスエストされたURLを照合
+
+mysite/urls.pyを確認
+三重クオート（ ''' や """ ）で囲まれた行は、docstringとよばれるコメント行
+'http://127.0.0.1:8000/' をブログの入口ページにして、投稿したブログポストのリストを表示するようにする
+簡潔なままにしておきたいため、blogアプリからurlをインポートするだけ
+##########################################
+from django.urls import path, include
+from django.contrib import admin
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('blog.urls')),
+]
+##########################################
+
+blogディレクトリの下にurls.pyというファイルを作成
+#################################################
+from django.urls import path
+from . import views
+urlpatterns = [
+    path('', views.post_list, name='post_list'),
+]
+#################################################
+Djangoのpath関数とblogアプリ内のすべてのビューをインポート
+post_listという名前のビューをルートURLに割り当て
+このURLパターンは空の文字列に一致し、URLのドメインは無視
+⇒'http://127.0.0.1:8000/'にアクセスすると、views.post_listが正しいとDjangoに伝える
+name='post_list'はビューを識別するために使われるURLの名前
+
+ビューがないため、エラーが出る。
+
+--ビューの作成--
+ビューとは、
+・アプリのロジックを書くところ
+・モデルに情報を要求し、テンプレートに渡す
+・ビューはただの関数で、アプリ名/views.pyに書く
+##########################################################
+from django.shortcuts import render
+def post_list(request):
+    return render(request, 'blog/post_list.html', {})
+##########################################################
+blog/post_list.htmlテンプレートを表示する (組み立てる) render 関数を return
+
+templateを作成する。
+blog/templates/blogにpost_list.htmlを作成
+blogが2度出ているのは、後からの作業を楽にするため
+######################
+<html>
+    <head>
+        <title>Django Girls blog</title>
+    </head>
+    <body>
+        <div>
+            <h1><a href="/">Django Girls Blog</a></h1>
+        </div>
+
+        <div>
+            <p>published: 14.06.2014, 12:14</p>
+            <h2><a href="">My first post</a></h2>
+            <p>Aenean eu leo quam. こんにちは！ よろしくお願いします！ </p>
+        </div>
+
+        <div>
+            <p>公開日: 2014/06/14, 12:14</p>
+            <h2><a href="">2番目の投稿</a></h2>
+            <p> こんにちは！ よろしくお願いします！ </p>
+        </div>
+    </body>
+</html>
+######################
+htmlファイルにコード追加
+
+最初の div 要素には、私たちのブログのタイトルが含まれており、見出しとリンクです。
+その他の２つのdiv要素には、このブログにポストされた記事が公開日とともに記載されています。
+h2はクリック可能な記事のタイトルです。２つのp(段落) は、１つが日付で、１つがブログにポストされた記事です。
+
+ここまでの内容を一度デプロイしてみる
+$ git status
