@@ -119,3 +119,51 @@ db.sqlite3
 
 git addを仕様する前や、変更内容を忘れたときは、下記で変更内容を確認
 $ git status
+
+変更内容を保存
+$ git add --all .
+$ git commit -m "My Django Girls app, first commit"
+
+--GitHubにコードをプッシュ--
+リポジトリの作成。
+"READMEで初期化する"チェックボックスをオフのまま
+.gitignoreオプションを空白にして（手動で行っています）
+ライセンスをNoneのままにしておく
+
+コンピューター上のリポジトリをGitHub上のリポジトリに結び付ける
+
+$ git remote add origin https://github.com/GitHubのユーザー名/my-first-blog.git
+クローンURL：https://github.com/ryo387841/my-first-blog.git
+$ git push -u origin master
+⇒ユーザー名とパスワードを入力
+
+PythonAnywhereでサイトを設定
+Bashを起動（コマンドラインと同じようなもの)
+
+
+PythonAnywhereにWebアプリケーションをデプロイするには、
+コードをGitHubからプルし、PythonAnywhereがそれを認識してWebアプリケーションのサーバを動かし始めるように設定する
+手動でもできるが、すべてやってくれるヘルパーツールがある
+$ pip3.6 install --user pythonanywhere←Bashで実行
+
+GitHub からアプリを自動的に構成するためのヘルパーを実行
+$ pa_autoconfigure_django.py https://github.com/ユーザー名/my-first-blog.git --nuke
+
+--下記を自動で行ってくれている--
+最後に--nukeをつけたらエラーを回避できた
+・GitHubからコードをダウンロードする
+・PythonAnywhere上にvirtualenvを作成する。ちょうどあなたのPC上のように
+・一部のデプロイメント設定で設定ファイルを更新する
+・manage.py migrateコマンドを使ってPythonAnywhere上のデータベースをセットアップする
+・静的ファイルの設定（これについては後で学習します）
+APIを通じてPythonAnywhereがあなたのWebアプリケーションを提供するように設定する
+
+
+データベースは別のため、superuserをもう一度作成する。
+ $ python manage.py createsuperuser
+基本的にローカルと同じが望ましい
+
+pythonanywhereのWebページからリンクを取得すると自分のサイトが確認できる
+
+実際に運用する際には、下記サイトでセキュリティのチェック
+https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
