@@ -1,0 +1,121 @@
+仮想環境の作成
+python -m venv 仮想環境名
+
+仮想環境へ入る
+$仮想環境名\Scripts\activate
+
+pipのアップグレード
+python -m pip install --upgrade pip
+
+djangoをインストール
+pip install django
+
+インストールしたライブラリを記録する
+pip freeze > requirements.txt
+
+djangoのプロジェクト作成
+django-admin.exe startproject プロジェクト名 .
+⇒最後のピリオドは現在のディレクトリにという意味
+
+settings.pyの編集
+TIME_ZONE = 'Asia/Tokyo'
+LANGUAGE_CODE = 'ja'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+⇒静的ファイルのパスを追加
+
+DEBUG=TRUEの時は、デプロイするサイトのホスト名を入れる必要がある。
+(ワイルドカード(*)も可能だが、ポイズンキャッシュニング対策のため，非推奨）
+ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']
+
+データベースのセットアップ(デフォルトはsqlite3)
+python manage.py migrate
+
+Webサーバーの起動(settings.pyでDEBUG=Falseにすると出来ない）
+python manage.py runserver
+
+アプリの作成
+python manage.py startapp アプリ名
+
+作成したアプリをdjangoに教える
+mysite/settings.pyのINSTALLED_APPSの部分にアプリ名を追
+
+アプリのモデルを作成する(オブジェクトの定義)
+アプリ名/models.pyを開き定義。
+##########################################################################
+from django.utils import timezone
+
+
+class Post(models.Model):#モデルの定義
+#classはオブジェクトであるということ
+#Postはモデルの名前←大文字で開始、特殊文字・空白は禁止
+#models.ModelはポストがDjango Modelだという意味。Djangoがデータベースで保存すべきものだとわかるように
+    author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    title = models.CharField(max_length=200)
+    text = models.TextField()
+    created_date = models.DateTimeField(
+            default=timezone.now)
+    published_date = models.DateTimeField(
+            blank=True, null=True)
+
+    def publish(self):#名前に意味はない
+        self.published_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.title
+##########################################################################
+
+models.CharField - 文字数が制限されたテキストを定義するフィールド
+models.TextField - これは制限無しの長いテキスト用
+models.DateTimeField - 日付と時間のフィールド
+models.ForeignKey - 他のモデルへのリンク
+
+その他は下記URLを参照
+https://docs.djangoproject.com/ja/2.0/ref/models/fields/#field-types
+
+
+モデルに変更があったことをDjangoに伝える
+python manage.py makemigrations アプリ名
+
+Djangoが用意した移行ファイルをデータベースに追加
+python manage.py migrate blog
+
+作成したモデルを追加・編集・削除するためにDjango Adminを使う
+アプリ名/admin.pyを編集
+
+from .models import Post#先ほどのclass名
+admin.site.register(Post)
+
+python manage.py runserverでサーバーを起動し、http://127.0.0.1:8000/admin/にアクセス
+
+ログインするためにsuperuserを追加
+python manage.py createsuperuser
+
+Django Adminについて詳しく知りたい場合
+https://docs.djangoproject.com/ja/2.0/ref/contrib/admin/
+
+--デプロイ--
+Gitリポジトリを始める
+claimyフォルダにいることを確認。
+
+$ git init
+$ git config --global user.name "ユーザー名"
+$ git config --global user.email you@example.com
+
+Gitに無視してほしいファイルの指定
+claimyフォルダ内に.ignoreファイルを作成。
+sqlite3を追加しておくことで、テストで作成したデータはローカルのものとなり、
+本番環境への影響を無視して作成できる。
+##############################
+*.pyc
+*~
+__pycache__
+myvenv
+db.sqlite3
+/static
+.DS_Store
+##############################
+
+git addを仕様する前や、変更内容を忘れたときは、下記で変更内容を確認
+$ git status
