@@ -245,5 +245,86 @@ htmlファイルにコード追加
 その他の２つのdiv要素には、このブログにポストされた記事が公開日とともに記載されています。
 h2はクリック可能な記事のタイトルです。２つのp(段落) は、１つが日付で、１つがブログにポストされた記事です。
 
-ここまでの内容を一度デプロイしてみる
+--ここまでの内容を一度デプロイしてみる--
+変更したファイルの確認
 $ git status
+
+gitに対してディレクトリ内の変更を反映させるように指示
+$ git add --all .
+⇒--allがあると削除したかどうかも判定
+.で自分が今いるディレクトリ
+
+アップロードするファイルの確認（アップロードされるファイルはすべて緑）
+$ git status
+
+どこを変更したか履歴に残すようにする
+$ git commit -m "Changed the HTML for the site."
+
+gitにアップロードする
+$ git push
+
+新しいコードをPythonAnywhereにpull
+cd ~/ユーザー名.pythonanywhere.com
+$ git pull
+
+自分のコードがダウンロードされたことを確認
+⇒「Files」ページ を押して、自分のコードをPythonAnywhereの中で見てみましょう
+（コンソールページのメニューボタンから他のPythonAnywhereページにアクセスできます
+最後に、「Web」ページを押して、自分のアプリのReloadを押します。←サーバーを再起動
+
+下記URLから自分のページを確認すると反映されている
+http://ryo387841.pythonanywhere.com/
+
+--クエリセット--
+pythonをインタラクティブモードで起動
+python manage.py shell
+
+データを表示させてみる
+from blog.models import Post
+Post.objects.all()
+
+データを登録してみる
+Post.objects.create(author=me, title='Sample title', text='Test')
+⇒authorにmeを渡しているが、Userモデルのインスタンスでないといけない
+⇒author='vw715'などにしてもダメ。
+
+特定条件の抽出
+Post.objects.filter(author=me)
+authorがmeのものだけを抽出
+
+Post.objects.filter(title__contains='title')
+titleコンテンツにtitleという単語が含まれているものだけを抽出
+アンダーバー2個でつなげているのは照合タイプの指定
+
+公開済みのpostを表示(published_dateが現在よりも前のもの)
+from django.utils import timezone
+Post.objects.filter(published_date__lte=timezone.now())
+
+postを公開するには
+post = Post.objects.get(title="Sample title")
+post.publish()
+
+プロンプトを閉じる
+exit()
+
+DBの内容をhtmlに反映
+view.pyにmodelをインポート（モデルの名前を指定）
+from .models import Post
+⇒.はカレントディレクトリ、もしくはカレントアプリ
+
+views.pyの関数内にクエリセットを追加
+posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+
+returnのrenderに値を渡す
+{}の中に'posts':posts
+
+djangoテンプレートで変数を表示するには、下記のように{{}}で囲む
+{{posts}}だと、オブジェクトのリストと認識されるため、下記のようにする。
+
+{% for post in posts %}
+    {{ post }}
+{% endfor %}
+
+
+{{ post.text|linebreaksbr }}
+linebreakerは、テキスト中の改行を段落に変えるフィルタに通す
