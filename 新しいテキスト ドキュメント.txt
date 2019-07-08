@@ -328,3 +328,21 @@ djangoテンプレートで変数を表示するには、下記のように{{}}で囲む
 
 {{ post.text|linebreaksbr }}
 linebreakerは、テキスト中の改行を段落に変えるフィルタに通す
+
+一旦デプロイする。
+
+（コマンドライン）
+git status
+
+git add --all .
+
+git status
+
+git commit -m "Modified templates to display posts from database."
+
+git push
+
+（pythonanywhereのBashコンソール）
+cd $USER.pythonanywhere.com
+
+git pull
