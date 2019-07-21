@@ -1,0 +1,45 @@
+{% load static %}<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>マスター管理</title>
+    <link rel="stylesheet" href="{% static 'mainteboard/css/bootstrap.min.css' %}">
+  </head>
+  <body>
+    <div class="container">
+      <ol class="breadcrumb my-4">
+        <li class="breadcrumb-item active">マスター管理</li>
+      </ol>
+      <table class="table">
+        <thead class="thead-inverse">
+          <tr>
+            <th>マスター名</th>
+            <th>　　</th>
+            <th>　　</th>
+            <th>　　</th>
+            <th>　　</th>
+            <th>　　</th>
+            <th>　　</th>
+            <th></th>
+
+          </tr>
+        </thead>
+        <tbody>
+          {% for list in lists %}
+            <tr>
+              <td class="align-middle">{{list.master_name}}</td>
+              <td class="align-middle">　　</td>
+              <td class="align-middle">　　</td>
+              <td class="align-middle">　　</td>
+              <td class="align-middle">　　</td>
+              <td class="align-middle">　　</td>
+              <td class="align-middle">　　</td>
+              <td class="align-middle"><button onclick="location.href='http://127.0.0.1:8000/master/{{list.path}}/'" type="button" name="button" class="btn btn-success btn-xs btn-block">編集</button></td>
+
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

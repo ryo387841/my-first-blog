@@ -1,0 +1,40 @@
+{% load static %}<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ユーザー管理</title>
+    <link rel="stylesheet" href="{% static 'mainteboard/css/bootstrap.min.css' %}">
+  </head>
+  <body>
+    <form method="post">
+      <div class="container">
+        <ol class="breadcrumb my-4">
+          <li class="breadcrumb-item active">ユーザーリスト</li>
+          <li><a href="http://127.0.0.1:8000/master/user/create/">ユーザー追加</a></li>
+          <li><a href="http://127.0.0.1:8000/master/">マスタ一覧へ</a></li>
+        </ol>
+        <table class="table">
+          <thead class="thead-inverse">
+            <tr>
+              <th></th>
+              <th>ユーザー名</th>
+              <th colspan="2">データ操作</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in users %}
+            {% csrf_token%}
+              <tr>
+                <td><input type="checkbox" name="delete_ids" value="{{ user.id }}"></td>
+                <td class="align-middle">{{ user.name }}</td>
+                <td class="align-middle"><button type="button" name="button" class="btn btn-success btn-xs btn-block">編集</button></td>
+                <td class="align-middle"><input type="submit" value="削除" class="btn btn-danger btn-xs btn-block"></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </form>
+  </body>
+</html>

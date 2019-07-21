@@ -25,7 +25,7 @@ SECRET_KEY = 'gmgku9)@8m90qc2%cfoi^8_20k@s&0ce)vt4&=ue2m3=*ahi_v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog',
+    'master',
+    'mainteboard',
+    'bootstrap_datepicker_plus',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +58,7 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -119,3 +122,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = "C:/Users/vw715/claimy/myvenv/Lib/site-packages/django/bin"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]

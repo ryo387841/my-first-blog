@@ -5,3 +5,4 @@ myvenv
 db.sqlite3
 /static
 .DS_Store
+mod_wsgi-4.6.7+ap24vc15-cp37-cp37m-win_amd64.whl

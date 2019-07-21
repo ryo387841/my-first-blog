@@ -1,0 +1,61 @@
+{% load static %}<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>メンテボード</title>
+    <link rel="stylesheet" href="{% static 'mainteboard/css/bootstrap.min.css' %}">
+  </head>
+  <body>
+    <div class="container">
+      <ol class="breadcrumb my-4">
+        <li class="breadcrumb-item active">メンテボード</li>
+        <li><a href="http://127.0.0.1:8000/mainteboard/create/">データ登録</a></li>
+        <li><a href="http://127.0.0.1:8000/master/">マスター管理</a></li>
+        <li><a class="btn btn-default" href="{% url 'update' id=regist.id %}"><span class="glyphicon glyphicon-pencil"></span></a></li>
+      </ol>
+      <table class="table">
+        <thead class="thead-inverse">
+          <tr>
+            <th>仕掛け開始日</th>
+            <td class="align-middle">{{ regist.shikakebi }}
+          </tr>
+          <tr>
+            <th>担当</th>
+            <td class="align-middle">{{ regist.user }}</td>
+          </tr>
+          <tr>
+            <th>納期</th>
+            <td class="align-middle">{{ regist.kiboubi }}</td>
+          </tr>
+          <tr>
+            <th>品番</th>
+            <td class="align-middle">{{ regist.hinban }}</td>
+          </tr>
+          <tr>
+            <th>型番</th>
+            <td class="align-middle">{{ regist.kataban }}</td>
+          </tr>
+          <tr>
+            <th>区分</th>
+            <td class="align-middle">{{ regist.kubun }}</td>
+          </tr>
+          <tr>
+            <th>内容</th>
+            <td class="align-middle">{{ regist.naiyo }}</td>
+          </tr>
+          <tr>
+            <th>見積工数(H)</th>
+            <td class="align-middle">{{ regist.mitsumorikosu }}</td>
+          </tr>
+          <tr>
+            <th>見直し工数(直)</th>
+            <td class="align-middle">{{ regist.minaoshikosu }}</td>
+          </tr>
+          <!--<td class="align-middle"><button onclick="location.href='{% url 'read' id=regist.id %}'" type="buttvk" class="btn btn-success btn-xs btn-block">編集</button></td>
+
+          <td class="align-middle"><button type="button" name="button" class="btn btn-danger btn-xs btn-block">削除</button></td>-->
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

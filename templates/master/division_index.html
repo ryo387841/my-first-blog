@@ -1,0 +1,36 @@
+{% load static %}<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>区分管理</title>
+    <link rel="stylesheet" href="{% static 'mainteboard/css/bootstrap.min.css' %}">
+  </head>
+  <body>
+    <div class="container">
+      <ol class="breadcrumb my-4">
+        <li class="breadcrumb-item active">ユーザーリスト</li>
+        <li><a href="http://127.0.0.1:8000/master/division/create/">区分追加</a></li>
+        <li><a href="http://127.0.0.1:8000/master/">マスタ一覧へ</a></li>
+      </ol>
+      <table class="table">
+        <thead class="thead-inverse">
+          <tr>
+            <th>内容名</th>
+            <th colspan="2">データ操作</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          {% for division in divisions %}
+            <tr>
+              <td class="align-middle">{{ division.kubun }}</td>
+              <td class="align-middle"><button type="button" name="button" class="btn btn-success btn-xs btn-block">編集</button></td>
+              <td class="align-middle"><button type="button" name="button" class="btn btn-danger btn-xs btn-block">削除</button></td>
+
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
